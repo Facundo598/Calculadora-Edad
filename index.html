@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversión DNI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    h2 {
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Convertir DNI a Fecha</h2>
+    <label for="numero">Ingrese un número DNI:</label>
+    <input type="number" id="numero" placeholder="Ejemplo: 1.234.456">
+    <button onclick="convertirFecha()">Convertir</button>
+    
+    <p id="resultadoFechaSerial" class="result"></p>
+    <p id="resultadoFecha" class="result"></p>
+    <p id="resultadoDiferencia" class="result"></p> <!-- Nueva línea para la diferencia -->
+  </div>
+
+  <script>
+    function convertirFecha() {
+      var numero = document.getElementById('numero').value;
+      if (numero === '') {
+        alert('Por favor ingrese un número');
+        return;
+      }
+
+      // Calcular la fecha serial con la fórmula F1 = 0.000495 * X + 15428.355
+      var fechaSerial = 0.000495 * numero + 15428.355;
+      
+      // Convertir la fecha serial a fecha
+      var baseDate = new Date(1899, 11, 30); // Fecha base: 30 de diciembre de 1899
+      var resultDate = new Date(baseDate.getTime() + (fechaSerial - 1) * 24 * 60 * 60 * 1000); // Ajuste para el número de días
+
+      // Mostrar los resultados
+      var fechaSerialString = 'Fecha Serial calculada: ' + fechaSerial.toFixed(4);
+      var fechaString = resultDate.toLocaleDateString(); // Formato de fecha local
+      document.getElementById('resultadoFechaSerial').innerText = fechaSerialString;
+      document.getElementById('resultadoFecha').innerText = 'La fecha correspondiente es: ' + fechaString;
+
+      // Calcular la diferencia en años con la fecha actual
+      var currentDate = new Date();
+      var yearsDifference = currentDate.getFullYear() - resultDate.getFullYear();
+      var monthDiff = currentDate.getMonth() - resultDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < resultDate.getDate())) {
+        yearsDifference--; // Ajuste si no se ha llegado al aniversario este año
+      }
+
+      // Mostrar la diferencia en años
+      document.getElementById('resultadoDiferencia').innerText = 'Edad aproximada: ' + yearsDifference;
+    }
+  </script>
+
+</body>
+</html>
