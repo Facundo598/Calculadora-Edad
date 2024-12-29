@@ -70,18 +70,18 @@
         return;
       }
 
-      // Calcular la fecha serial con la fórmula F1 = 0.000495 * X + 15428.355
-      var fechaSerial = 0.000495 * numero + 15428.355;
-      
-      // Convertir la fecha serial a fecha
-      var baseDate = new Date(1899, 11, 30); // Fecha base: 30 de diciembre de 1899
+      // Calcular la fecha serial
+      var fechaSerial = 0.5822 * (numero / 1000) - 0.00000123 * ((numero / 1000) ** 2) + 14065.5257;
+
+      // Convertir la fecha serial de Excel a una fecha de calendario
+	    var baseDate = new Date(1900, 0, 1); // Fecha base: 1900/enero/1
       var resultDate = new Date(baseDate.getTime() + (fechaSerial - 1) * 24 * 60 * 60 * 1000); // Ajuste para el número de días
 
       // Mostrar los resultados
-      var fechaSerialString = 'Fecha Serial calculada: ' + fechaSerial.toFixed(4);
+      var fechaSerialString = 'Fecha Serial calculada: ' + fechaSerial.toFixed(0);
       var fechaString = resultDate.toLocaleDateString(); // Formato de fecha local
       document.getElementById('resultadoFechaSerial').innerText = fechaSerialString;
-      document.getElementById('resultadoFecha').innerText = 'La fecha correspondiente es: ' + fechaString;
+      document.getElementById('resultadoFecha').innerText = 'Fecha calculada: ' + fechaString;
 
       // Calcular la diferencia en años con la fecha actual
       var currentDate = new Date();
